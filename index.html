@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>accordion js</title>
+
+    <!-- accordion js and css -->
+    <link rel="stylesheet" href="./accordion.css" />
+    <script defer src="./accordion.js"></script>
+
+    <style>
+      pre {
+        margin: 20px;
+        border: 2px solid burlywood;
+        padding: 20px 20px 20px 0;
+        width: fit-content;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Accordion-js example</h1>
+    <ul class="accordions">
+      <li class="accordion">
+        <button class="accordion__btn">Btn</button>
+        <div class="accordion__content">Content</div>
+      </li>
+      <li class="accordion">
+        <button class="accordion__btn">Btn</button>
+        <div class="accordion__content">Content</div>
+      </li>
+      <li class="accordion accordion--init-open">
+        <button class="accordion__btn">Btn</button>
+        <div class="accordion__content">Content</div>
+      </li>
+    </ul>
+
+    <div class="wrapper">
+      <h2>Ready code for accordion</h2>
+
+      <div class="box">
+        <h3>HTML</h3>
+        <pre>
+        <code >
+          &lt;ul class="accordions"&gt;
+              &lt;li class="accordion"&gt;
+                &lt;button class="accordion__btn"&gt;Btn&lt;/button&gt;
+                &lt;div class="accordion__content"&gt;Content&lt;/div&gt;
+              &lt;/li&gt;
+              &lt;li class="accordion"&gt;
+                &lt;button class="accordion__btn"&gt;Btn&lt;/button&gt;
+                &lt;div class="accordion__content"&gt;Content&lt;/div&gt;
+              &lt;/li&gt;
+              &lt;li class="accordion accordion--init-open"&gt;
+                &lt;button class="accordion__btn"&gt;Btn&lt;/button&gt;
+                &lt;div class="accordion__content"&gt;Content&lt;/div&gt;
+              &lt;/li&gt;
+            &lt;/ul&gt;
+        </code>
+      </pre>
+      </div>
+
+      <div class="box">
+        <h3>CSS</h3>
+        <pre>
+        <code>
+          .accordion__content {
+          max-height: 0;
+          overflow: hidden;
+          opacity: 0;
+          will-change: max-height;
+          visibility: hidden;
+
+          -webkit-transition: opacity, max-height, 0.3s;
+          -o-transition: opacity, max-height, 0.3s;
+          -moz-transition: opacity, max-height, 0.3s;
+          transition: opacity, max-height, 0.3s;
+        }
+        .accordion__btn {
+          cursor: pointer;
+        }
+        .accordion--open .accordion__content {
+          visibility: visible;
+          overflow: visible;
+          opacity: 1;
+        }
+
+        </code>
+      </pre>
+      </div>
+
+      <div class="box">
+        <h3>JavaScript</h3>
+        <pre>
+        <code>
+        const accordion = () => {
+          const accordionBtns = document.querySelectorAll(".accordion__btn");
+          const accorionInitOpen = document.querySelectorAll(".accordion--init-open");
+
+          accordionBtns.forEach(btn => {
+            btn.addEventListener("click", e => {
+              const parent = e.target.closest(".accordion");
+              const content = parent.querySelector(".accordion__content");
+
+              if (parent.classList.contains("accordion--open")) {
+                parent.classList.remove("accordion--open");
+                content.style.maxHeight = 0;
+                return;
+              }
+              parent.classList.add("accordion--open");
+              content.style.maxHeight = `${content.scrollHeight * 2}px`;
+            });
+          });
+
+          accorionInitOpen.forEach(accordionOpen => {
+            accordionOpen.querySelector(".accordion__btn").click();
+            accordionOpen.classList.remove("accordion--init-open");
+          });
+        };
+        window.addEventListener("load", accordion);
+
+        </code>
+      </pre>
+      </div>
+    </div>
+  </body>
+</html>

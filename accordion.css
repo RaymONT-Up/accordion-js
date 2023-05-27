@@ -1,0 +1,23 @@
+.accordion__content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  will-change: max-height;
+  visibility: hidden;
+
+  -webkit-transition: opacity, max-height, 0.3s;
+
+  -o-transition: opacity, max-height, 0.3s;
+
+  -moz-transition: opacity, max-height, 0.3s;
+
+  transition: opacity, max-height, 0.3s;
+}
+.accordion__btn {
+  cursor: pointer;
+}
+.accordion--open .accordion__content {
+  visibility: visible;
+  overflow: visible;
+  opacity: 1;
+}
