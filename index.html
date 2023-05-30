@@ -17,31 +17,82 @@
         padding: 20px 20px 20px 0;
         width: fit-content;
       }
+      .accordions {
+        max-width: 500px;
+        background-color: bisque;
+      }
+      .wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 40px;
+      }
+      .codeWrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-gap: 20px;
+      }
+      .box {
+        width: fit-content;
+      }
     </style>
   </head>
   <body>
     <h1>Accordion-js example</h1>
-    <ul class="accordions">
-      <li class="accordion">
-        <button class="accordion__btn">Btn</button>
-        <div class="accordion__content">Content</div>
-      </li>
-      <li class="accordion">
-        <button class="accordion__btn">Btn</button>
-        <div class="accordion__content">Content</div>
-      </li>
-      <li class="accordion accordion--init-open">
-        <button class="accordion__btn">Btn</button>
-        <div class="accordion__content">Content</div>
-      </li>
-    </ul>
 
     <div class="wrapper">
+      <div class="box">
+        <ul class="accordions" data-accordion-only-one="true">
+          <li class="accordion">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+          <li class="accordion">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+
+          <li class="accordion">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+          <li class="accordion accordion--open">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+        </ul>
+
+        wrapper have data-accordion-only-one="true" then we open only one
+        accordion 'class="accordions" data-accordion-only-one="true"
+      </div>
+      <div class="box">
+        <ul class="accordions">
+          <li class="accordion">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+          <li class="accordion accordion--open">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+
+          <li class="accordion">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+          <li class="accordion accordion--open">
+            <button class="accordion__btn">Btn</button>
+            <div class="accordion__content">Content</div>
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div>
       <h2>Ready code for accordion</h2>
 
-      <div class="box">
-        <h3>HTML</h3>
-        <pre>
+      <div class="codeWrapper">
+        <div class="box">
+          <h3>HTML</h3>
+          <pre>
         <code >
           &lt;ul class="accordions"&gt;
               &lt;li class="accordion"&gt;
@@ -52,76 +103,123 @@
                 &lt;button class="accordion__btn"&gt;Btn&lt;/button&gt;
                 &lt;div class="accordion__content"&gt;Content&lt;/div&gt;
               &lt;/li&gt;
-              &lt;li class="accordion accordion--init-open"&gt;
+              &lt;li class="accordion accordion--open"&gt;
                 &lt;button class="accordion__btn"&gt;Btn&lt;/button&gt;
                 &lt;div class="accordion__content"&gt;Content&lt;/div&gt;
               &lt;/li&gt;
             &lt;/ul&gt;
         </code>
       </pre>
-      </div>
+        </div>
 
-      <div class="box">
-        <h3>CSS</h3>
-        <pre>
+        <div class="box">
+          <h3>CSS</h3>
+          <pre>
         <code>
-          .accordion__content {
-          max-height: 0;
-          overflow: hidden;
-          opacity: 0;
-          will-change: max-height;
-          visibility: hidden;
+        .accordion__content {
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        will-change: max-height;
+        visibility: hidden;
 
-          -webkit-transition: opacity, max-height, 0.3s;
-          -o-transition: opacity, max-height, 0.3s;
-          -moz-transition: opacity, max-height, 0.3s;
-          transition: opacity, max-height, 0.3s;
-        }
-        .accordion__btn {
-          cursor: pointer;
-        }
-        .accordion--open .accordion__content {
-          visibility: visible;
-          overflow: visible;
-          opacity: 1;
-        }
+        -webkit-transition: opacity, max-height, 0.3s;
+
+        -o-transition: opacity, max-height, 0.3s;
+
+        -moz-transition: opacity, max-height, 0.3s;
+
+        transition: opacity, max-height, 0.3s;
+      }
+      .accordion__btn {
+        cursor: pointer;
+      }
+      .accordion--open > .accordion__content {
+        visibility: visible;
+        overflow: visible;
+        opacity: 1;
+      }
 
         </code>
       </pre>
-      </div>
+        </div>
 
-      <div class="box">
-        <h3>JavaScript</h3>
-        <pre>
+        <div class="box">
+          <h3>JavaScript</h3>
+          <pre>
         <code>
-        const accordion = () => {
-          const accordionBtns = document.querySelectorAll(".accordion__btn");
-          const accorionInitOpen = document.querySelectorAll(".accordion--init-open");
+       const accordion = () => {
+        const accordionWrappers = document.querySelectorAll(".accordions");
 
-          accordionBtns.forEach(btn => {
+        accordionWrappers.forEach(wrapper => {
+          // if wrapper "class='accordion' data-accordion-only-one='true'" then we close every accordion and open only one
+          const accordionOnlyOne = wrapper.dataset.accordionOnlyOne;
+          const accordions = wrapper.querySelectorAll(".accordion");
+
+          const accordionInitOpen = wrapper.querySelectorAll(".accordion--open");
+          const btns = wrapper.querySelectorAll(".accordion__btn");
+
+          // Close Accordion
+          const closeAccordion = (accordion, accordionContent) => {
+            // remove active class
+            accordion.classList.remove("accordion--open");
+            // set maxHeight for 0
+            accordionContent.style.maxHeight = 0;
+          };
+
+          // Close every accordion in this wrapper
+          const closeEveryAccordion = accordions => {
+            accordions.forEach(accordion => {
+              const accordionContent = accordion.querySelector(".accordion__content");
+              closeAccordion(accordion, accordionContent);
+            });
+          };
+
+          const openAccordion = (accordion, accordionContent) => {
+            accordion.classList.add("accordion--open");
+            accordionContent.style.maxHeight = `${
+              accordionContent.scrollHeight * 1
+            }px`;
+          };
+
+          // Open/Close accordion
+          const toggleAccordion = (accordion, accordionContent) => {
+            // if accordion now open we close it
+            if (accordion.classList.contains("accordion--open")) {
+              closeAccordion(accordion, accordionContent);
+              return;
+            }
+
+            // open accordion
+            openAccordion(accordion, accordionContent);
+          };
+
+          btns.forEach(btn => {
             btn.addEventListener("click", e => {
-              const parent = e.target.closest(".accordion");
-              const content = parent.querySelector(".accordion__content");
+              const accordion = e.target.closest(".accordion");
+              const accordionContent = accordion.querySelector(".accordion__content");
 
-              if (parent.classList.contains("accordion--open")) {
-                parent.classList.remove("accordion--open");
-                content.style.maxHeight = 0;
-                return;
+              // If = true then we close every accordion and open only one
+              if (accordionOnlyOne) {
+                console.log(accordionOnlyOne);
+                closeEveryAccordion(accordions);
               }
-              parent.classList.add("accordion--open");
-              content.style.maxHeight = `${content.scrollHeight * 2}px`;
+
+              toggleAccordion(accordion, accordionContent);
             });
           });
 
-          accorionInitOpen.forEach(accordionOpen => {
-            accordionOpen.querySelector(".accordion__btn").click();
-            accordionOpen.classList.remove("accordion--init-open");
+          // Init Open
+          accordionInitOpen.forEach(accordion => {
+            const accordionContent = accordion.querySelector(".accordion__content");
+            openAccordion(accordion, accordionContent);
           });
-        };
-        window.addEventListener("load", accordion);
-
+        });
+      };
+      window.addEventListener("load", accordion);
         </code>
       </pre>
+        </div>
       </div>
     </div>
   </body>

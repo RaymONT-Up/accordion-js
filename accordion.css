@@ -16,7 +16,7 @@
 .accordion__btn {
   cursor: pointer;
 }
-.accordion--open .accordion__content {
+.accordion--open > .accordion__content {
   visibility: visible;
   overflow: visible;
   opacity: 1;
